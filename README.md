@@ -1,73 +1,70 @@
-# Obsidian Sample Plugin
+Gitlab Issues for Obsidian
+====
 
-This is a sample plugin for Obsidian (https://obsidian.md).
+A plugin for [Obsidian](https://obsidian.md/) to import issues from Gitlab.
 
-This project uses Typescript to provide type checking and documentation.
-The repo depends on the latest plugin API (obsidian.d.ts) in Typescript Definition format, which contains TSDoc comments describing what it does.
+Each issue returned from Gitlab is created as an Obsidian note in the specified output directory.
 
-**Note:** The Obsidian API is still in early alpha and is subject to change at any time!
+You can create your own template to customise the format of the issue note.
 
-This sample plugin demonstrates some of the basic functionality the plugin API can do.
-- Changes the default font color to red using `styles.css`.
-- Adds a ribbon icon, which shows a Notice when clicked.
-- Adds a command "Open Sample Modal" which opens a Modal.
-- Adds a plugin setting tab to the settings page.
-- Registers a global click event and output 'click' to the console.
-- Registers a global interval which logs 'setInterval' to the console.
+Notes are intended to be *READ ONLY*, as they will be removed from your Obsidian vault if they no longer are 
+returned by Gitlab.
 
-## First time developing plugins?
+Issues are queried for every hour.
 
-Quick starting guide for new plugin devs:
+## Configuration
 
-- Check if [someone already developed a plugin for what you want](https://obsidian.md/plugins)! There might be an existing plugin similar enough that you can partner up with.
-- Make a copy of this repo as a template with the "Use this template" button (login to GitHub if you don't see it).
-- Clone your repo to a local development folder. For convenience, you can place this folder in your `.obsidian/plugins/your-plugin-name` folder.
-- Install NodeJS, then run `npm i` in the command line under your repo folder.
-- Run `npm run dev` to compile your plugin from `main.ts` to `main.js`.
-- Make changes to `main.ts` (or create new `.ts` files). Those changes should be automatically compiled into `main.js`.
-- Reload Obsidian to load the new version of your plugin.
-- Enable plugin in settings window.
-- For updates to the Obsidian API run `npm update` in the command line under your repo folder.
+You must have a Gitlab account.
 
-## Releasing new releases
+1) Generate a Gitlab [Personal Access Token](https://gitlab.com/-/profile/personal_access_tokens) for the plugin that 
+   has `API` scope included.
+2) Install the plugin through the Obsidian Community Plugins section, and then enable it.
+3) Enter the Personal Access Token you created at Gitlab into the Token field in the plugin settings.
 
-- Update your `manifest.json` with your new version number, such as `1.0.1`, and the minimum Obsidian version required for your latest release.
-- Update your `versions.json` file with `"new-plugin-version": "minimum-obsidian-version"` so older versions of Obsidian can download an older version of your plugin that's compatible.
-- Create new GitHub release using your new version number as the "Tag version". Use the exact version number, don't include a prefix `v`. See here for an example: https://github.com/obsidianmd/obsidian-sample-plugin/releases
-- Upload the files `manifest.json`, `main.js`, `styles.css` as binary attachments. Note: The manifest.json file must be in two places, first the root path of your repository and also in the release.
-- Publish the release.
+## Example - Listing upcoming deadlines
 
-> You can simplify the version bump process by running `npm version patch`, `npm version minor` or `npm version major` after updating `minAppVersion` manually in `manifest.json`.
-> The command will bump version in `manifest.json` and `package.json`, and add the entry for the new version to `versions.json`
+With the default filter value of `due_date=month`, the Gitlab API will return all issues that have a Due Date in the 
+next month.
 
-## Adding your plugin to the community plugin list
+The plugin will create an Obsidian note file for each issue.
 
-- Check https://github.com/obsidianmd/obsidian-releases/blob/master/plugin-review.md
-- Publish an initial version.
-- Make sure you have a `README.md` file in the root of your repo.
-- Make a pull request at https://github.com/obsidianmd/obsidian-releases to add your plugin.
+You can then use the excellent [DataView Plugin](https://github.com/blacksmithgu/obsidian-dataview) to create lists 
+of upcoming issues to embed anywhere you like in your vault. For example:
 
-## How to use
+```yaml
+dataview
+TABLE WITHOUT ID file.link AS "Task", dueDate AS "Due Date" from "@Data/Gitlab Issues"
+SORT dueDate
+```
 
-- Clone this repo.
-- `npm i` or `yarn` to install dependencies
-- `npm run dev` to start compilation in watch mode.
+If you then close an issue on Gitlab, or change its due date to be further in the future, the issue will be removed 
+from your vault, and the DataView list will no longer show the issue.
 
-## Manually installing the plugin
+## Going Further
 
-- Copy over `main.js`, `styles.css`, `manifest.json` to your vault `VaultFolder/.obsidian/plugins/your-plugin-id/`.
+### Customise the API query
+You can use any valid query filter permitted by Gitlab in the "Issues List" endpoint. See the [Gitlab API 
+Documentation](https://docs.gitlab.com/ee/api/issues.html#list-issues) for all possible options.
 
-## Improve code quality with eslint (optional)
-- [ESLint](https://eslint.org/) is a tool that analyzes your code to quickly find problems. You can run ESLint against your plugin to find common bugs and ways to improve your code. 
-- To use eslint with this project, make sure to install eslint from terminal:
-  - `npm install -g eslint`
-- To use eslint to analyze this project use this command:
-  - `eslint main.ts`
-  - eslint will then create a report with suggestions for code improvement by file and line number.
-- If your source code is in a folder, such as `src`, you can use eslint with this command to analyze all files in that folder:
-  - `eslint .\src\`
+### Use a custom template
+You can customise the template used to create the new notes. Create a note for the template, and specify the path 
+to this note in the plugin settings.
 
+The template must be a valid Handlebars template. See the [Handlebars](https://handlebarsjs.com/guide/) documentation 
+for more information on the syntax.
 
-## API Documentation
+Currently, the available fields include:
 
-See https://github.com/obsidianmd/obsidian-api
+`id` `title` `description` `due_date` `web_url` 
+
+## Bugs
+
+Please report bugs right here in the repository issues section.
+
+## Contributions
+
+Contributions are welcome. Please submit a single PR per bug or feature.
+
+## License
+
+The plugin code is released under the MIT license. See the [LICENSE](LICENSE.txt) document for more information.

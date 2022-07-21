@@ -15,7 +15,7 @@ esbuild.build({
 	banner: {
 		js: banner,
 	},
-	entryPoints: ['main.ts'],
+	entryPoints: ['src/main.ts'],
 	bundle: true,
 	external: [
 		'obsidian',
@@ -46,6 +46,9 @@ esbuild.build({
 		'@lezer/lr',
 		...builtins],
 	format: 'cjs',
+	loader: {
+		'.svg': 'text',
+	},
 	watch: !prod,
 	target: 'es2016',
 	logLevel: "info",
