@@ -8,15 +8,19 @@ export interface GitlabIssuesSettings {
 	outputDir: string;
 	filter: string;
 	showIcon: boolean;
+	gitlabApiUrl(): string;
 }
 
 export const DEFAULT_SETTINGS: GitlabIssuesSettings = {
-	gitlabUrl: 'https://gitlab.com/api/v4',
+	gitlabUrl: 'https://gitlab.com',
 	gitlabToken: '',
 	templateFile: '',
 	outputDir: '/Gitlab Issues/',
 	filter: 'due_date=month',
 	showIcon: false,
+	gitlabApiUrl(): string {
+		return `${this.gitlabUrl}/api/v4`;	
+	}
 };
 
 export class GitlabIssuesSettingTab extends PluginSettingTab {
@@ -32,6 +36,17 @@ export class GitlabIssuesSettingTab extends PluginSettingTab {
 
 		containerEl.empty();
 		containerEl.createEl('h2', {text: 'GitLab Issues Configuration'});
+
+		new Setting(containerEl)
+		.setName('Gitlab instance URL')
+		.setDesc('Use your own Gitlab instance instead of the public hosted Gitlab.')
+		.addText(text => text
+			.setPlaceholder('https://gitlab.com')
+			.setValue(this.plugin.settings.gitlabUrl)
+			.onChange(async (value) => {
+				this.plugin.settings.gitlabUrl = value;
+				await this.plugin.saveSettings();
+			}));
 
 		new Setting(containerEl)
 			.setName('Personal Access Token')
