@@ -15,13 +15,9 @@ export default class GitlabLoader {
 	}
 
 	loadIssues() {
-
-		const urlParts: Array<string> = [
-			this.settings.gitlabUrl,
-			'/issues?' + this.settings.filter,
-		];
-
-		GitlabApi.load<Array<Issue>>(urlParts.join(''), this.settings.gitlabToken)
+		// URL Encode the user filter settings
+		const apiURL = `${this.settings.gitlabApiUrl()}/issues?${this.settings.filter}`;
+		GitlabApi.load<Array<Issue>>(encodeURI(apiURL), this.settings.gitlabToken)
 			.then((issues: Array<Issue>) => {
 				issues = issues.map((rawIssue: Issue) => new GitlabIssue(rawIssue));
 				this.fs.purgeExistingIssues();
