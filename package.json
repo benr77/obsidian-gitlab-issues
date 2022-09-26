@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-gitlab-issues",
-	"version": "1.0.1",
+	"version": "0.1.1",
 	"description": "Obsidian plugin to import issues from GitLab.",
 	"main": "main.js",
 	"scripts": {
