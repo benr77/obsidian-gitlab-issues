@@ -16,10 +16,8 @@ export default class GitlabLoader {
 
 	loadIssues() {
 		// URL Encode the user filter settings
-		const filterItems = this.settings.filter.split("&").map(filterGroup => filterGroup.split('=').map((value, index) =>  index % 2 == 0 ? value : `${encodeURIComponent(value)}` ).join("="));
-		const apiURL = `${this.settings.gitlabApiUrl()}/issues?${filterItems.join('&')}`;
-
-		GitlabApi.load<Array<Issue>>(apiURL, this.settings.gitlabToken)
+		const apiURL = `${this.settings.gitlabApiUrl()}/issues?${this.settings.filter}`;
+		GitlabApi.load<Array<Issue>>(encodeURI(apiURL), this.settings.gitlabToken)
 			.then((issues: Array<Issue>) => {
 				issues = issues.map((rawIssue: Issue) => new GitlabIssue(rawIssue));
 				this.fs.purgeExistingIssues();
