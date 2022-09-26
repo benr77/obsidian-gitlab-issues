@@ -6,6 +6,9 @@ import gitlabIcon from './assets/gitlab-icon.svg';
 
 export default class GitlabIssuesPlugin extends Plugin {
 	settings: GitlabIssuesSettings;
+	startupTimeout: number|null = null;
+	automaticRefresh: number|null = null;
+	iconAdded = false;
 
 	async onload() {
 		console.log('Starting Gitlab Issues plugin');
@@ -25,10 +28,15 @@ export default class GitlabIssuesPlugin extends Plugin {
 	private addIconToLeftRibbon() {
 		if (this.settings.showIcon)
 		{
-			addIcon("gitlab", gitlabIcon);
-			this.addRibbonIcon('gitlab', 'Gitlab Issues', (evt: MouseEvent) => {
-				this.fetchFromGitlab();
-			});
+			// Ensure we did not already add an icon
+			if (!this.iconAdded) 
+			{
+				addIcon("gitlab", gitlabIcon);
+				this.addRibbonIcon('gitlab', 'Gitlab Issues', (evt: MouseEvent) => {
+					this.fetchFromGitlab();
+				});
+				this.iconAdded = true;
+			}			
 		}
 	}
 
@@ -43,13 +51,22 @@ export default class GitlabIssuesPlugin extends Plugin {
 	}
 
 	private refreshIssuesAtStartup() {
-		this.registerInterval(window.setTimeout(() => {
+		// Clear existing startup timeout
+		if (this.startupTimeout) {			
+			// Not sure if this is the correct way to clear the timeout
+			// as it was created through Obsidian's API			
+			window.clearInterval(this.startupTimeout);			
+		}		
+		this.startupTimeout = this.registerInterval(window.setTimeout(() => {
 			this.fetchFromGitlab();
 		}, 5 * 1000)); // after 5 seconds
 	}
 
 	private scheduleAutomaticRefresh() {
-		this.registerInterval(window.setInterval(() => {
+		if (this.automaticRefresh) {
+			window.clearInterval(this.automaticRefresh);
+		}
+		this.automaticRefresh = this.registerInterval(window.setInterval(() => {
 			this.fetchFromGitlab();
 		}, 15 * 60 * 1000)); // every 15 minutes
 	}
