@@ -29,14 +29,14 @@ export default class GitlabIssuesPlugin extends Plugin {
 		if (this.settings.showIcon)
 		{
 			// Ensure we did not already add an icon
-			if (!this.iconAdded) 
+			if (!this.iconAdded)
 			{
 				addIcon("gitlab", gitlabIcon);
 				this.addRibbonIcon('gitlab', 'Gitlab Issues', (evt: MouseEvent) => {
 					this.fetchFromGitlab();
 				});
 				this.iconAdded = true;
-			}			
+			}
 		}
 	}
 
@@ -52,14 +52,14 @@ export default class GitlabIssuesPlugin extends Plugin {
 
 	private refreshIssuesAtStartup() {
 		// Clear existing startup timeout
-		if (this.startupTimeout) {			
+		if (this.startupTimeout) {
 			// Not sure if this is the correct way to clear the timeout
-			// as it was created through Obsidian's API			
-			window.clearInterval(this.startupTimeout);			
-		}		
+			// as it was created through Obsidian's API
+			window.clearInterval(this.startupTimeout);
+		}
 		this.startupTimeout = this.registerInterval(window.setTimeout(() => {
 			this.fetchFromGitlab();
-		}, 5 * 1000)); // after 5 seconds
+		}, 30 * 1000)); // after 30 seconds
 	}
 
 	private scheduleAutomaticRefresh() {
