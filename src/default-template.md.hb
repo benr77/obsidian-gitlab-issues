@@ -3,7 +3,7 @@ id: {{id}}
 title: {{title}}
 dueDate: {{due_date}}
 webUrl: {{web_url}}
-project: {{references.project}}
+project: {{references.full}}
 ---
 
 ### {{title}}
