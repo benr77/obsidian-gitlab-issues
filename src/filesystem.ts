@@ -1,6 +1,7 @@
 import { Issue } from "./issue";
 import {Vault, TFile, TAbstractFile, TFolder} from "obsidian";
 import { GitlabIssuesSettings } from "./settings";
+import log from "./logger";
 import { compile } from 'handlebars';
 
 export default class Filesystem {
@@ -15,7 +16,11 @@ export default class Filesystem {
 
 	public createOutputDirectory() {
 		this.vault.createFolder(this.settings.outputDir)
-			.catch(() => console.log('Could not create output directory'))
+			.catch((error) => {
+				if (error.message !== 'Folder already exists.') {
+					log('Could not create output directory')
+				}
+			})
 		;
 	}
 
@@ -26,7 +31,7 @@ export default class Filesystem {
 			Vault.recurseChildren(outputDir, (existingFile: TAbstractFile) => {
 				if (existingFile instanceof TFile) {
 					this.vault.delete(existingFile)
-						.catch(error => console.log(error.message));
+						.catch(error => log(error.message));
 				}
 			})
 		}
@@ -41,14 +46,14 @@ export default class Filesystem {
 					(issue: Issue) => this.writeFile(issue, template)
 				);
 			})
-			.catch((error) => console.log(error.message))
+			.catch((error) => log(error.message))
 		;
 	}
 
 	private writeFile(issue: Issue, template: HandlebarsTemplateDelegate)
 	{
 		this.vault.create(this.fileName(issue), template(issue))
-			.catch((error) => console.log(error.message))
+			.catch((error) => log(error.message))
 		;
 	}
 

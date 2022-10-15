@@ -5,6 +5,7 @@ export interface Issue {
 	description: string;
 	due_date: string;
 	web_url: string;
+	references: string;
 }
 
 export class GitlabIssue implements Issue {
@@ -14,6 +15,7 @@ export class GitlabIssue implements Issue {
 	description: string;
 	due_date: string;
 	web_url: string;
+	references: string;
 
 	constructor(issue: Issue) {
 		this.id = issue.id;
@@ -21,5 +23,6 @@ export class GitlabIssue implements Issue {
 		this.description = issue.description;
 		this.due_date = issue.due_date;
 		this.web_url = issue.web_url;
+		this.references = issue.references;
 	}
 }

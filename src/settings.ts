@@ -19,7 +19,7 @@ export const DEFAULT_SETTINGS: GitlabIssuesSettings = {
 	filter: 'due_date=month',
 	showIcon: false,
 	gitlabApiUrl(): string {
-		return `${this.gitlabUrl}/api/v4`;	
+		return `${this.gitlabUrl}/api/v4`;
 	}
 };
 
@@ -58,7 +58,7 @@ export class GitlabIssuesSettingTab extends PluginSettingTab {
 					this.plugin.settings.gitlabToken = value;
 					await this.plugin.saveSettings();
 					this.plugin.onload().then(
-						() => console.log('Reloading plugin')
+						() => console.log('Gitlab Issues: Reloading plugin')
 					);
 				}));
 
