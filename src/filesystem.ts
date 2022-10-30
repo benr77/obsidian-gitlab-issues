@@ -6,7 +6,10 @@ import { compile } from 'handlebars';
 
 export default class Filesystem {
 
+	private defaultTemplate = app.vault.configDir + '/plugins/obsidian-gitlab-issues/default-template.md.hb';
+
 	private vault: Vault;
+
 	private settings: GitlabIssuesSettings;
 
 	constructor(vault: Vault, settings: GitlabIssuesSettings) {
@@ -59,13 +62,11 @@ export default class Filesystem {
 
 	private templateLocation(): string
 	{
-		const defaultTemplate = app.vault.configDir + '/plugins/obsidian-gitlab-issues/src/default-template.md.hb';
-
 		if (this.settings.templateFile.length) {
 			return this.settings.templateFile;
 		}
 
-		return defaultTemplate;
+		return this.defaultTemplate;
 	}
 
 	private fileName(issue: Issue): string
