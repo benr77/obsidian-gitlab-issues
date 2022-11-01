@@ -1,4 +1,5 @@
----
+
+export default `---
 id: {{id}}
 title: {{title}}
 dueDate: {{due_date}}
@@ -12,3 +13,4 @@ project: {{references.full}}
 {{{description}}}
 
 [View On Gitlab]({{web_url}})
+`;

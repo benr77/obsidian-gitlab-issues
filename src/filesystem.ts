@@ -3,10 +3,9 @@ import {Vault, TFile, TAbstractFile, TFolder} from "obsidian";
 import { GitlabIssuesSettings } from "./settings";
 import log from "./logger";
 import { compile } from 'handlebars';
+import defaultTemplate from './default-template'
 
 export default class Filesystem {
-
-	private defaultTemplate = app.vault.configDir + '/plugins/obsidian-gitlab-issues/default-template.md.hb';
 
 	private vault: Vault;
 
@@ -42,14 +41,17 @@ export default class Filesystem {
 
 	public processIssues(issues: Array<Issue>)
 	{
-		this.vault.adapter.read(this.templateLocation())
+		this.vault.adapter.read(this.settings.templateFile)
 			.then((rawTemplate: string) => {
-				const template = compile(rawTemplate);
 				issues.map(
-					(issue: Issue) => this.writeFile(issue, template)
+					(issue: Issue) => this.writeFile(issue, compile(rawTemplate))
 				);
 			})
-			.catch((error) => log(error.message))
+			.catch((error) => {
+				issues.map(
+					(issue: Issue) => this.writeFile(issue, compile(defaultTemplate.toString()))
+				);
+			})
 		;
 	}
 
@@ -58,15 +60,6 @@ export default class Filesystem {
 		this.vault.create(this.fileName(issue), template(issue))
 			.catch((error) => log(error.message))
 		;
-	}
-
-	private templateLocation(): string
-	{
-		if (this.settings.templateFile.length) {
-			return this.settings.templateFile;
-		}
-
-		return this.defaultTemplate;
 	}
 
 	private fileName(issue: Issue): string
