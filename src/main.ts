@@ -54,9 +54,7 @@ export default class GitlabIssuesPlugin extends Plugin {
 	private refreshIssuesAtStartup() {
 		// Clear existing startup timeout
 		if (this.startupTimeout) {
-			// Not sure if this is the correct way to clear the timeout
-			// as it was created through Obsidian's API
-			window.clearInterval(this.startupTimeout);
+			window.clearTimeout(this.startupTimeout);
 		}
 		this.startupTimeout = this.registerInterval(window.setTimeout(() => {
 			this.fetchFromGitlab();
