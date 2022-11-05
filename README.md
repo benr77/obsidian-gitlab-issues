@@ -24,6 +24,8 @@ You must have a Gitlab account.
 2) Install the plugin through the Obsidian Community Plugins section, and then enable it.
 3) Enter the Personal Access Token you created at Gitlab into the Token field in the plugin settings.
 
+![Plugin Settings Screen](doc/screenshot/gitlab-issues-config-screen.png)
+
 ## Example - Listing upcoming deadlines
 
 With the default filter value of `due_date=month`, the Gitlab API will return all issues that have a Due Date in the 
