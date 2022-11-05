@@ -1,7 +1,10 @@
 Gitlab Issues for Obsidian
 ====
 
-A plugin for [Obsidian](https://obsidian.md/) to import issues from Gitlab.
+![Build Status](https://github.com/benr77/obsidian-gitlab-issues/actions/workflows/releases.yml/badge.svg)
+[![Github All Releases](https://img.shields.io/github/downloads/benr77/obsidian-gitlab-issues/total.svg)]()
+
+A plugin for [Obsidian](https://obsidian.md/) to import issues from [Gitlab](https://gitlab.com/).
 
 Each issue returned from Gitlab is created as an Obsidian note in the specified output directory.
 
@@ -10,7 +13,7 @@ You can create your own template to customise the format of the issue note.
 Notes are intended to be *READ ONLY*, as they will be removed from your Obsidian vault if they no longer are 
 returned by Gitlab.
 
-Issues are queried for every hour.
+The latest issues are loaded from Gitlab 30 seconds after Obsidian is started, and then automatically every 15 minutes.
 
 ## Configuration
 
@@ -59,7 +62,7 @@ Currently, the available fields include:
 
 ## Bugs
 
-Please report bugs right here in the repository issues section.
+Please report bugs right here in the repository [issues](https://github.com/benr77/obsidian-gitlab-issues/issues) section.
 
 ## Contributions
 
