@@ -6,6 +6,7 @@ export interface Issue {
 	due_date: string;
 	web_url: string;
 	references: string;
+	readonly filename: string;
 }
 
 export class GitlabIssue implements Issue {
@@ -16,6 +17,12 @@ export class GitlabIssue implements Issue {
 	due_date: string;
 	web_url: string;
 	references: string;
+
+	get filename() {
+		return this.title
+			.replace(/[:]/g, '')
+			.replace(/[*"/\\<>|?]/g, '-');
+	};
 
 	constructor(issue: Issue) {
 		this.id = issue.id;

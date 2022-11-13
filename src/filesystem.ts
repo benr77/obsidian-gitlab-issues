@@ -64,6 +64,6 @@ export default class Filesystem {
 
 	private fileName(issue: Issue): string
 	{
-		return this.settings.outputDir + '/' + issue.title + '.md';
+		return this.settings.outputDir + '/' + issue.filename + '.md';
 	}
 }
