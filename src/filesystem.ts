@@ -1,4 +1,4 @@
-import { Issue } from "./issue";
+import {GitlabIssue} from "./issue";
 import {Vault, TFile, TAbstractFile, TFolder} from "obsidian";
 import { GitlabIssuesSettings } from "./settings";
 import log from "./logger";
@@ -39,30 +39,30 @@ export default class Filesystem {
 		}
 	}
 
-	public processIssues(issues: Array<Issue>)
+	public processIssues(issues: Array<GitlabIssue>)
 	{
 		this.vault.adapter.read(this.settings.templateFile)
 			.then((rawTemplate: string) => {
 				issues.map(
-					(issue: Issue) => this.writeFile(issue, compile(rawTemplate))
+					(issue: GitlabIssue) => this.writeFile(issue, compile(rawTemplate))
 				);
 			})
 			.catch((error) => {
 				issues.map(
-					(issue: Issue) => this.writeFile(issue, compile(defaultTemplate.toString()))
+					(issue: GitlabIssue) => this.writeFile(issue, compile(defaultTemplate.toString()))
 				);
 			})
 		;
 	}
 
-	private writeFile(issue: Issue, template: HandlebarsTemplateDelegate)
+	private writeFile(issue: GitlabIssue, template: HandlebarsTemplateDelegate)
 	{
 		this.vault.create(this.fileName(issue), template(issue))
 			.catch((error) => log(error.message))
 		;
 	}
 
-	private fileName(issue: Issue): string
+	private fileName(issue: GitlabIssue): string
 	{
 		return this.settings.outputDir + '/' + issue.filename + '.md';
 	}
