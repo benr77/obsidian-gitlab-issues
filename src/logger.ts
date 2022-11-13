@@ -1,7 +1,7 @@
 
-export default function (message: String) {
+export default function (message: string) {
 
-	const pluginNamePrefix = 'Gitlab Issues: '
+	const pluginNamePrefix = 'Gitlab Issues: ';
 
 	console.log(pluginNamePrefix + message);
 }

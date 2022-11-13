@@ -21,7 +21,7 @@ export class GitlabIssue implements Issue {
 		return this.title
 			.replace(/[:]/g, '')
 			.replace(/[*"/\\<>|?]/g, '-');
-	};
+	}
 
 	constructor(issue: Issue) {
 		this.id = issue.id;

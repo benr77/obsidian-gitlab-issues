@@ -1,10 +1,10 @@
-import {requestUrl, RequestUrlParam, RequestUrlResponse} from 'obsidian'
+import {requestUrl, RequestUrlParam, RequestUrlResponse} from 'obsidian';
 
 export default class GitlabApi {
 
 	static load<T>(url: string, gitlabToken: string): Promise<T> {
 
-		const headers = { 'PRIVATE-TOKEN': gitlabToken }
+		const headers = { 'PRIVATE-TOKEN': gitlabToken };
 
 		const params: RequestUrlParam = { url: url, headers: headers };
 
