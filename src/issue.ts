@@ -1,4 +1,4 @@
-import { sanitizeSpecialChars } from './util';
+import { sanitizeFileName } from './util';
 
 export interface Issue {
 	id: number;
@@ -20,7 +20,7 @@ export class GitlabIssue implements Issue {
 	references: string;
 
 	get filename() {
-		return sanitizeSpecialChars(this.title);
+		return sanitizeFileName(this.title);
 	}
 
 	constructor(issue: Issue) {
