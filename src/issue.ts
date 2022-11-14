@@ -7,6 +7,7 @@ export interface Issue {
 	due_date: string;
 	web_url: string;
 	references: string;
+	get filename(): string;
 }
 
 export class GitlabIssue implements Issue {
