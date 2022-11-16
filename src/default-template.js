@@ -1,13 +1,13 @@
 
 export default `---
 id: {{id}}
-title: {{title}}
+title: {{{title}}}
 dueDate: {{due_date}}
 webUrl: {{web_url}}
 project: {{references.full}}
 ---
 
-### {{title}}
+### {{{title}}}
 ##### Due on {{due_date}}
 
 {{{description}}}
