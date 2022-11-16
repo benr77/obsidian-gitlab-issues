@@ -1,6 +1,7 @@
 Gitlab Issues for Obsidian
 ====
 
+![CI](https://github.com/benr77/obsidian-gitlab-issues/actions/workflows/ci.yml/badge.svg)
 ![Build Status](https://github.com/benr77/obsidian-gitlab-issues/actions/workflows/releases.yml/badge.svg)
 [![Github All Releases](https://img.shields.io/github/downloads/benr77/obsidian-gitlab-issues/total.svg)]()
 
