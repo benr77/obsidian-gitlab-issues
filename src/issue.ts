@@ -1,13 +1,13 @@
 import { sanitizeFileName } from './util';
 
 export interface Issue {
-	id: number;
-	title: string;
-	description: string;
-	due_date: string;
-	web_url: string;
-	references: string;
-	get filename(): string;
+	readonly id: number;
+	readonly title: string;
+	readonly description: string;
+	readonly due_date: string;
+	readonly web_url: string;
+	readonly references: string;
+	readonly filename: string;
 }
 
 export class GitlabIssue implements Issue {
