@@ -1,9 +1,9 @@
-import { Issue } from "./issue";
+import { GitlabIssue, Issue } from "./issue";
 import {Vault, TFile, TAbstractFile, TFolder} from "obsidian";
 import { GitlabIssuesSettings } from "./settings";
 import log from "./logger";
 import { compile } from 'handlebars';
-import defaultTemplate from './default-template'
+import defaultTemplate from './default-template';
 
 export default class Filesystem {
 
@@ -20,7 +20,7 @@ export default class Filesystem {
 		this.vault.createFolder(this.settings.outputDir)
 			.catch((error) => {
 				if (error.message !== 'Folder already exists.') {
-					log('Could not create output directory')
+					log('Could not create output directory');
 				}
 			})
 		;
@@ -35,7 +35,7 @@ export default class Filesystem {
 					this.vault.delete(existingFile)
 						.catch(error => log(error.message));
 				}
-			})
+			});
 		}
 	}
 
@@ -44,12 +44,12 @@ export default class Filesystem {
 		this.vault.adapter.read(this.settings.templateFile)
 			.then((rawTemplate: string) => {
 				issues.map(
-					(issue: Issue) => this.writeFile(issue, compile(rawTemplate))
+					(issue: GitlabIssue) => this.writeFile(issue, compile(rawTemplate))
 				);
 			})
 			.catch((error) => {
 				issues.map(
-					(issue: Issue) => this.writeFile(issue, compile(defaultTemplate.toString()))
+					(issue: GitlabIssue) => this.writeFile(issue, compile(defaultTemplate.toString()))
 				);
 			})
 		;
@@ -64,6 +64,6 @@ export default class Filesystem {
 
 	private fileName(issue: Issue): string
 	{
-		return this.settings.outputDir + '/' + issue.title + '.md';
+		return this.settings.outputDir + '/' + issue.filename + '.md';
 	}
 }
