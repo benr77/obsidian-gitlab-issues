@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.8](https://github.com/benr77/obsidian-gitlab-issues/compare/0.1.7...0.1.8) (2022-11-16)
+
 ### [0.1.7](https://github.com/benr77/obsidian-gitlab-issues/compare/0.1.6...0.1.7) (2022-11-05)
 
 ### [0.1.6](https://github.com/benr77/obsidian-gitlab-issues/compare/0.1.5...0.1.6) (2022-11-01)
