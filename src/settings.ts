@@ -1,23 +1,31 @@
-import {App, PluginSettingTab, Setting, normalizePath} from "obsidian";
+import {App, normalizePath, PluginSettingTab, Setting} from "obsidian";
 import GitlabIssuesPlugin from "./main";
+
+type GitlabIssuesLevel = 'personal' | 'project' | 'group'
 
 export interface GitlabIssuesSettings {
 	gitlabUrl: string;
 	gitlabToken: string;
+	gitlabIssuesLevel: GitlabIssuesLevel;
+	gitlabAppId: string;
 	templateFile: string;
 	outputDir: string;
 	filter: string;
 	showIcon: boolean;
+	purgeIssues: boolean;
 	gitlabApiUrl(): string;
 }
 
 export const DEFAULT_SETTINGS: GitlabIssuesSettings = {
 	gitlabUrl: 'https://gitlab.com',
 	gitlabToken: '',
+	gitlabIssuesLevel: 'personal',
+	gitlabAppId: '',
 	templateFile: '',
 	outputDir: '/Gitlab Issues/',
 	filter: 'due_date=month',
 	showIcon: false,
+	purgeIssues: true,
 	gitlabApiUrl(): string {
 		return `${this.gitlabUrl}/api/v4`;
 	}
@@ -38,15 +46,15 @@ export class GitlabIssuesSettingTab extends PluginSettingTab {
 		containerEl.createEl('h2', {text: 'GitLab Issues Configuration'});
 
 		new Setting(containerEl)
-		.setName('Gitlab instance URL')
-		.setDesc('Use your own Gitlab instance instead of the public hosted Gitlab.')
-		.addText(text => text
-			.setPlaceholder('https://gitlab.com')
-			.setValue(this.plugin.settings.gitlabUrl)
-			.onChange(async (value) => {
-				this.plugin.settings.gitlabUrl = value;
-				await this.plugin.saveSettings();
-			}));
+			.setName('Gitlab instance URL')
+			.setDesc('Use your own Gitlab instance instead of the public hosted Gitlab.')
+			.addText(text => text
+				.setPlaceholder('https://gitlab.com')
+				.setValue(this.plugin.settings.gitlabUrl)
+				.onChange(async (value) => {
+					this.plugin.settings.gitlabUrl = value;
+					await this.plugin.saveSettings();
+				}));
 
 		new Setting(containerEl)
 			.setName('Personal Access Token')
@@ -57,9 +65,6 @@ export class GitlabIssuesSettingTab extends PluginSettingTab {
 				.onChange(async (value) => {
 					this.plugin.settings.gitlabToken = value;
 					await this.plugin.saveSettings();
-					this.plugin.onload().then(
-						() => console.log('Gitlab Issues: Reloading plugin')
-					);
 				}));
 
 		new Setting(containerEl)
@@ -93,6 +98,36 @@ export class GitlabIssuesSettingTab extends PluginSettingTab {
 				.setValue(this.plugin.settings.filter)
 				.onChange(async (value) => {
 					this.plugin.settings.filter = value;
+					await this.plugin.saveSettings();
+				}));
+
+
+		new Setting(containerEl)
+			.setName('GitLab Level')
+			.addDropdown(value => value
+				.addOptions({personal: "Personal", project: "Project", group: "Group"})
+				.setValue(this.plugin.settings.gitlabIssuesLevel)
+				.onChange(async (value: GitlabIssuesLevel) => {
+					this.plugin.settings.gitlabIssuesLevel = value;
+					await this.plugin.saveSettings();
+				}));
+
+		new Setting(containerEl)
+			.setName('Set Gitlab Project/Group Id')
+			.setDesc('If Group or Project is set, add the corresponding ID.')
+			.addText(value => value
+				.setValue(this.plugin.settings.gitlabAppId)
+				.onChange(async (value: string) => {
+					this.plugin.settings.gitlabAppId = value;
+					await this.plugin.saveSettings();
+				}));
+
+		new Setting(containerEl)
+			.setName('Purge issues that are no longer in Gitlab?')
+			.addToggle(value => value
+				.setValue(this.plugin.settings.purgeIssues)
+				.onChange(async (value) => {
+					this.plugin.settings.purgeIssues = value;
 					await this.plugin.saveSettings();
 				}));
 
