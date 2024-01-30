@@ -27,7 +27,12 @@ export const DEFAULT_SETTINGS: GitlabIssuesSettings = {
 	showIcon: false,
 	purgeIssues: true,
 	gitlabApiUrl(): string {
-		return `${this.gitlabUrl}/api/v4`;
+        if (this.gitlabUrl.indexOf('/api/') != -1) {
+            // Full path to API (might be a project specific URL
+		    return this.gitlabUrl;
+        } else {
+		    return `${this.gitlabUrl}/api/v4`;
+        }
 	}
 };
 
