@@ -15,7 +15,7 @@ export class GitlabIssue implements ObsidianIssue {
 	}
 
 	constructor(issue: Issue) {
-		Object.assign(this, issue)
+		Object.assign(this, issue);
 	}
 
 	_links: {

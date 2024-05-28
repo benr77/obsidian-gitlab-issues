@@ -3,7 +3,7 @@ import { GitlabIssuesSettings } from "./settings";
 import log from "./logger";
 import { compile } from 'handlebars';
 import defaultTemplate from './default-template';
-import {Issue, ObsidianIssue} from "./types";
+import {ObsidianIssue} from "./types";
 
 export default class Filesystem {
 

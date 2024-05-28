@@ -32,7 +32,7 @@ export default class GitlabIssuesPlugin extends Plugin {
 			window.clearInterval(this.automaticRefresh);
 		}
 		if (this.settings.intervalOfRefresh !== "off") {
-			let intervalMinutes = parseInt(this.settings.intervalOfRefresh);
+			const intervalMinutes = parseInt(this.settings.intervalOfRefresh);
 
 			this.automaticRefresh = this.registerInterval(window.setInterval(() => {
 				this.fetchFromGitlab();
