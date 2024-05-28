@@ -1,6 +1,7 @@
 import {App, normalizePath, PluginSettingTab, Setting} from "obsidian";
 import GitlabIssuesPlugin from "./main";
 
+
 type GitlabIssuesLevel = 'personal' | 'project' | 'group';
 type GitlabRefreshInterval = "15" | "30" | "45" |"60" | "120" | "off";
 
@@ -108,6 +109,7 @@ export class GitlabIssuesSettingTab extends PluginSettingTab {
 
 
 		new Setting(containerEl)
+
 			.setName('Refresh Rate')
 			.setDesc("That rate at which gitlab issues will be pulled.")
 			.addDropdown(value => value
