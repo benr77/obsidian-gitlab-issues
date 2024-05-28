@@ -1,8 +1,9 @@
 import GitlabApi from "./gitlab-api";
-import {GitlabIssue, Issue} from "./issue";
+import {GitlabIssue} from "./issue";
 import {App} from "obsidian";
 import {GitlabIssuesSettings} from "./settings";
 import Filesystem from "./filesystem";
+import {Issue} from "./types";
 
 export default class GitlabLoader {
 
@@ -34,7 +35,6 @@ export default class GitlabLoader {
 				if(this.settings.purgeIssues) {
 					this.fs.purgeExistingIssues();
 				}
-
 				this.fs.processIssues(gitlabIssues);
 			})
 			.catch(error => {

@@ -1,4 +1,4 @@
-import {Notice, Plugin, addIcon} from 'obsidian';
+import {addIcon, Notice, Plugin} from 'obsidian';
 import {DEFAULT_SETTINGS, GitlabIssuesSettings, GitlabIssuesSettingTab} from './settings';
 import log from "./logger";
 import Filesystem from "./filesystem";
@@ -7,8 +7,8 @@ import gitlabIcon from './assets/gitlab-icon.svg';
 
 export default class GitlabIssuesPlugin extends Plugin {
 	settings: GitlabIssuesSettings;
-	startupTimeout: number|null = null;
-	automaticRefresh: number|null = null;
+	startupTimeout: number | null = null;
+	automaticRefresh: number | null = null;
 	iconAdded = false;
 
 	async onload() {
@@ -16,6 +16,7 @@ export default class GitlabIssuesPlugin extends Plugin {
 
 		await this.loadSettings();
 		this.addSettingTab(new GitlabIssuesSettingTab(this.app, this));
+
 
 		if (this.settings.gitlabToken) {
 			this.createOutputFolder();
@@ -26,12 +27,35 @@ export default class GitlabIssuesPlugin extends Plugin {
 		}
 	}
 
+	scheduleAutomaticRefresh() {
+		if (this.automaticRefresh) {
+			window.clearInterval(this.automaticRefresh);
+		}
+		if (this.settings.intervalOfRefresh !== "off") {
+			let intervalMinutes = parseInt(this.settings.intervalOfRefresh);
+
+			this.automaticRefresh = this.registerInterval(window.setInterval(() => {
+				this.fetchFromGitlab();
+			}, intervalMinutes * 60 * 1000)); // every settings interval in minutes
+		}
+	}
+
+	onunload() {
+
+	}
+
+	async loadSettings() {
+		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+	}
+
+	async saveSettings() {
+		await this.saveData(this.settings);
+	}
+
 	private addIconToLeftRibbon() {
-		if (this.settings.showIcon)
-		{
+		if (this.settings.showIcon) {
 			// Ensure we did not already add an icon
-			if (!this.iconAdded)
-			{
+			if (!this.iconAdded) {
 				addIcon("gitlab", gitlabIcon);
 				this.addRibbonIcon('gitlab', 'Gitlab Issues', (evt: MouseEvent) => {
 					this.fetchFromGitlab();
@@ -56,18 +80,11 @@ export default class GitlabIssuesPlugin extends Plugin {
 		if (this.startupTimeout) {
 			window.clearTimeout(this.startupTimeout);
 		}
-		this.startupTimeout = this.registerInterval(window.setTimeout(() => {
-			this.fetchFromGitlab();
-		}, 30 * 1000)); // after 30 seconds
-	}
-
-	private scheduleAutomaticRefresh() {
-		if (this.automaticRefresh) {
-			window.clearInterval(this.automaticRefresh);
+		if(this.settings.refreshOnStartup) {
+			this.startupTimeout = this.registerInterval(window.setTimeout(() => {
+				this.fetchFromGitlab();
+			}, 30 * 1000)); // after 30 seconds
 		}
-		this.automaticRefresh = this.registerInterval(window.setInterval(() => {
-			this.fetchFromGitlab();
-		}, 15 * 60 * 1000)); // every 15 minutes
 	}
 
 	private createOutputFolder() {
@@ -75,21 +92,9 @@ export default class GitlabIssuesPlugin extends Plugin {
 		fs.createOutputDirectory();
 	}
 
-	private fetchFromGitlab () {
+	private fetchFromGitlab() {
 		new Notice('Updating issues from Gitlab');
 		const loader = new GitlabLoader(this.app, this.settings);
 		loader.loadIssues();
-	}
-
-	onunload() {
-
-	}
-
-	async loadSettings() {
-		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
-	}
-
-	async saveSettings() {
-		await this.saveData(this.settings);
 	}
 }
