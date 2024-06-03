@@ -1,9 +1,11 @@
 import {addIcon, Notice, Plugin} from 'obsidian';
-import {DEFAULT_SETTINGS, GitlabIssuesSettings, GitlabIssuesSettingTab} from './settings';
 import log from "./logger";
 import Filesystem from "./filesystem";
 import GitlabLoader from "./gitlab-loader";
 import gitlabIcon from './assets/gitlab-icon.svg';
+import {GitlabIssuesSettingTab} from "./SettingsTab/settings-tab";
+import {GitlabIssuesSettings} from "./SettingsTab/settings-types";
+import {DEFAULT_SETTINGS} from "./SettingsTab/settings";
 
 export default class GitlabIssuesPlugin extends Plugin {
 	settings: GitlabIssuesSettings;
