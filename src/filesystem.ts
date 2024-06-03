@@ -1,9 +1,8 @@
 import {Vault, TFile, TAbstractFile, TFolder} from "obsidian";
-import log from "./logger";
 import { compile } from 'handlebars';
-import defaultTemplate from './default-template';
-import {ObsidianIssue} from "./types";
+import {ObsidianIssue} from "./GitlabLoader/issue-types";
 import {GitlabIssuesSettings} from "./SettingsTab/settings-types";
+import {DEFAULT_TEMPLATE, logger} from "./utils/utils";
 
 export default class Filesystem {
 
@@ -20,7 +19,7 @@ export default class Filesystem {
 		this.vault.createFolder(this.settings.outputDir)
 			.catch((error) => {
 				if (error.message !== 'Folder already exists.') {
-					log('Could not create output directory');
+					logger('Could not create output directory');
 				}
 			})
 		;
@@ -33,7 +32,7 @@ export default class Filesystem {
 			Vault.recurseChildren(outputDir, (existingFile: TAbstractFile) => {
 				if (existingFile instanceof TFile) {
 					this.vault.delete(existingFile)
-						.catch(error => log(error.message));
+						.catch(error => logger(error.message));
 				}
 			});
 		}
@@ -49,7 +48,7 @@ export default class Filesystem {
 			})
 			.catch((error) => {
 				issues.map(
-					(issue: ObsidianIssue) => this.writeFile(issue, compile(defaultTemplate.toString()))
+					(issue: ObsidianIssue) => this.writeFile(issue, compile(DEFAULT_TEMPLATE.toString()))
 				);
 			})
 		;
@@ -58,7 +57,7 @@ export default class Filesystem {
 	private writeFile(issue: ObsidianIssue, template: HandlebarsTemplateDelegate)
 	{
 		this.vault.create(this.buildFileName(issue), template(issue))
-			.catch((error) => log(error.message))
+			.catch((error) => logger(error.message))
 		;
 	}
 

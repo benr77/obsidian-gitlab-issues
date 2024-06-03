@@ -1,11 +1,11 @@
 import {addIcon, Notice, Plugin} from 'obsidian';
-import log from "./logger";
 import Filesystem from "./filesystem";
-import GitlabLoader from "./gitlab-loader";
+import GitlabLoader from "./GitlabLoader/gitlab-loader";
 import gitlabIcon from './assets/gitlab-icon.svg';
 import {GitlabIssuesSettingTab} from "./SettingsTab/settings-tab";
 import {GitlabIssuesSettings} from "./SettingsTab/settings-types";
 import {DEFAULT_SETTINGS} from "./SettingsTab/settings";
+import {logger} from "./utils/utils";
 
 export default class GitlabIssuesPlugin extends Plugin {
 	settings: GitlabIssuesSettings;
@@ -14,7 +14,7 @@ export default class GitlabIssuesPlugin extends Plugin {
 	iconAdded = false;
 
 	async onload() {
-		log('Starting plugin');
+		logger('Starting plugin');
 
 		await this.loadSettings();
 		this.addSettingTab(new GitlabIssuesSettingTab(this.app, this));

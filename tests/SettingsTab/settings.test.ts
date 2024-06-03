@@ -1,5 +1,5 @@
-import {GitlabIssuesSettings} from "../src/SettingsTab/settings-types";
-import {DEFAULT_SETTINGS, settings} from "../src/SettingsTab/settings";
+import {GitlabIssuesSettings} from "../../src/SettingsTab/settings-types";
+import {DEFAULT_SETTINGS, settings} from "../../src/SettingsTab/settings";
 
 describe('DEFAULT_SETTINGS', () => {
 	it('should have the correct default values', () => {
