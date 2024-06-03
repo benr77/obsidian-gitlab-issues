@@ -1,9 +1,9 @@
 import {Vault, TFile, TAbstractFile, TFolder} from "obsidian";
-import { GitlabIssuesSettings } from "./settings";
 import log from "./logger";
 import { compile } from 'handlebars';
 import defaultTemplate from './default-template';
 import {ObsidianIssue} from "./types";
+import {GitlabIssuesSettings} from "./SettingsTab/settings-types";
 
 export default class Filesystem {
 

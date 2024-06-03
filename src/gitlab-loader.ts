@@ -1,9 +1,9 @@
 import GitlabApi from "./gitlab-api";
 import {GitlabIssue} from "./issue";
 import {App} from "obsidian";
-import {GitlabIssuesSettings} from "./settings";
 import Filesystem from "./filesystem";
 import {Issue} from "./types";
+import {GitlabIssuesSettings} from "./SettingsTab/settings-types";
 
 export default class GitlabLoader {
 
