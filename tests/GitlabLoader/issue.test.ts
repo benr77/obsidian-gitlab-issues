@@ -1,7 +1,7 @@
 
-import * as Utils from '../src/util';
-import { Issue } from '../src/types';
-import {GitlabIssue} from "../src/issue";
+import * as Utils from '../../src/utils/utils';
+import { Issue } from '../../src/GitlabLoader/issue-types';
+import {GitlabIssue} from "../../src/GitlabLoader/issue";
 
 
 

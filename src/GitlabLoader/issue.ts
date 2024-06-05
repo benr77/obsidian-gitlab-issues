@@ -1,5 +1,5 @@
-import {sanitizeFileName} from './util';
-import {Assignee, Epic, Issue, ObsidianIssue, References, ShortIssue, TimeStats} from "./types";
+import {sanitizeFileName} from '../utils/utils';
+import {Assignee, Epic, Issue, ObsidianIssue, References, ShortIssue, TimeStats} from "./issue-types";
 
 export class GitlabIssue implements ObsidianIssue {
 

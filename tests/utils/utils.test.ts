@@ -1,4 +1,4 @@
-import { sanitizeFileName } from '../src/util';
+import {DEFAULT_TEMPLATE, logger, sanitizeFileName} from '../../src/utils/utils';
 
 describe('Utils', () => {
 	describe('sanitizeFileName', () => {
@@ -41,10 +41,43 @@ describe('Utils', () => {
 
 		it.each(dataSet)(
 			'$input',
-			({ input, output }) => {
+			({input, output}) => {
 				const sanitizedResult = sanitizeFileName(input);
 				expect(sanitizedResult).toBe(output);
 			}
 		);
 	});
+
+	describe('logger', () => {
+		it('should log the message with the correct prefix', () => {
+			const message = 'This is a test message';
+			const expectedOutput = 'Gitlab Issues: This is a test message';
+			const consoleLogSpy = jest.spyOn(console, 'log').mockImplementation();
+
+			logger(message);
+
+			expect(consoleLogSpy).toHaveBeenCalledWith(expectedOutput);
+			consoleLogSpy.mockRestore();
+		});
+	});
+
+	describe('DEFAULT_TEMPLATE', () => {
+		it('should return the DEFAULT TEMPLATE', () => {
+			expect(DEFAULT_TEMPLATE).toStrictEqual(`---
+id: {{id}}
+title: {{{title}}}
+dueDate: {{due_date}}
+webUrl: {{web_url}}
+project: {{references.full}}
+---
+
+### {{{title}}}
+##### Due on {{due_date}}
+
+{{{description}}}
+
+[View On Gitlab]({{web_url}})
+`);
+		})
+	})
 });

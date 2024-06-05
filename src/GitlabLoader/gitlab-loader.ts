@@ -1,9 +1,10 @@
 import GitlabApi from "./gitlab-api";
 import {GitlabIssue} from "./issue";
 import {App} from "obsidian";
-import {GitlabIssuesSettings} from "./settings";
-import Filesystem from "./filesystem";
-import {Issue} from "./types";
+import Filesystem from "../filesystem";
+import {Issue} from "./issue-types";
+import {GitlabIssuesSettings} from "../SettingsTab/settings-types";
+import {logger} from "../utils/utils";
 
 export default class GitlabLoader {
 
@@ -38,7 +39,7 @@ export default class GitlabLoader {
 				this.fs.processIssues(gitlabIssues);
 			})
 			.catch(error => {
-				console.error(error.message);
+				logger(error.message);
 			});
 	}
 }
